@@ -23,11 +23,13 @@ Usage
 
 Once the extension is installed, simply use it in your code by  :
 
-<code>
+
 <?php 
 use andreosoft\image; 
 ?>
+
 ....
+
 <?php
     $options = [
           'root' => \Yii::getAlias('@root'),
@@ -36,4 +38,3 @@ use andreosoft\image;
     ];
     echo Image::thumb('test-image.jpg', 120, 120)
 ?>
-</code>
