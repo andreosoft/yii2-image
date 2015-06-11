@@ -7,8 +7,9 @@ use yii\helpers\Url;
 /**
  * Description of Image
  *
- * @author andreo
+ * @author Andrey Zagorets
  */
+
 class Image {
     
     /* Example of use:
