@@ -1,0 +1,24 @@
+{
+    "name": "andreosoft/yii2-image",
+    "description": "The Codemirror extension for the Yii framework",
+    "keywords": ["yii2", "image", "thumbnail"],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "support": {
+        "source": "https://github.com/andreosoft/yii2-image"
+    },
+    "authors": [
+        {
+            "name": "Andrey Zagorets",
+            "email": "AndreyZagorets@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "andreosoft\\image\\": ""
+        }
+    }
+}
