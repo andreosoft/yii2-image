@@ -31,10 +31,17 @@ use andreosoft\image;
 ....
 
 <?php
+
     $options = [
+
           'root' => \Yii::getAlias('@root'),
+
           'webroot' => 'http://mysite.com/uploads',
+
           'quality' => 50,
+
     ];
+
     echo Image::thumb('test-image.jpg', 120, 120)
+
 ?>
