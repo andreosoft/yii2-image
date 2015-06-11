@@ -2,6 +2,8 @@
 
 namespace andreosoft\image;
 
+use yii\helpers\Url;
+
 /**
  * Description of Image
  *
