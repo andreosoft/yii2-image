@@ -2,9 +2,10 @@
 namespace andreosoft\image;
 
 class CoreImage {
-	private $file;
-	private $image;
-	private $info;
+    
+	public $file;
+	public $image;
+	public $info;
 
 	public function __construct($file) {
 		if (file_exists($file)) {
