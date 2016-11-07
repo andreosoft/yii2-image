@@ -74,7 +74,11 @@ class Image {
                     if (isset($options['watermark']['position'])) {
                         $position = $options['watermark']['position'];
                     }
-                    $image->watermark($root . $options['watermark']['file'], $position);
+                    $percent = 0.3;
+                    if (isset($options['watermark']['percent'])) {
+                        $percent = $options['watermark']['percent'];
+                    }
+                    $image->watermark($root . $options['watermark']['file'], $position, $percent);
                 }
                 if (isset($options['quality'])) {
                     $image->save($cachedir . $new_image, $options['quality']);
