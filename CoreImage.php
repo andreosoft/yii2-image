@@ -27,13 +27,13 @@ class CoreImage {
 	}
 
 	private function create($image) {
-		$mime = $this->info['mime'];
-
-		if ($mime == 'image/gif') {
+                $info = pathinfo($image);
+		$extension = strtolower($info['extension']);
+		if ($extension == 'gif') {
 			return imagecreatefromgif ($image);
-		} elseif ($mime == 'image/png') {
+		} elseif ($extension == 'png') {
 			return imagecreatefrompng($image);
-		} elseif ($mime == 'image/jpeg') {
+		} elseif ($extension == 'jpeg' || $extension == 'jpg') {
 			return imagecreatefromjpeg($image);
 		}
 	}
@@ -106,8 +106,26 @@ class CoreImage {
 		$this->info['height'] = $height;
 	}
 
-	public function watermark($file, $position = 'bottomright') {
-		$watermark = $this->create($file);
+	public function watermark($file, $position = 'bottomright', $percent = 0.3) {
+		$wmark = $this->create($file);
+
+		$width = imagesx($wmark);
+		$height = imagesy($wmark);
+		$percent = ($this->info['width'] / $width )* $percent;
+
+
+		$newwidth = $width * $percent;
+		$newheight = $height * $percent;
+
+		// загрузка
+		$watermark = imagecreatetruecolor($newwidth, $newheight);
+		imagealphablending($watermark, false);
+		imagesavealpha($watermark, true);
+		$background = imagecolorallocatealpha($watermark, 255, 255, 255, 127);
+		imagecolortransparent($watermark, $background);
+		// изменение размера
+		imagecopyresized($watermark, $wmark, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+
 
 		$watermark_width = imagesx($watermark);
 		$watermark_height = imagesy($watermark);
@@ -130,9 +148,8 @@ class CoreImage {
 				$watermark_pos_y = $this->info['height'] - $watermark_height;
 				break;
 		}
-
-		imagecopy($this->image, $watermark, $watermark_pos_x, $watermark_pos_y, 0, 0, 120, 40);
-
+                imagecopy($this->image, $watermark, $watermark_pos_x, $watermark_pos_y, 0, 0, $watermark_width, $watermark_height);
+		
 		imagedestroy($watermark);
 	}
 
