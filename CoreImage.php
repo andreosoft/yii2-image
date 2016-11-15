@@ -75,9 +75,11 @@ class CoreImage {
             $scale = $scale_w;
         } elseif ($default == 'h') {
             $scale = $scale_h;
+        } elseif ($default == 'max')  {
+            $scale = max($scale_w, $scale_h);
         } else {
             $scale = min($scale_w, $scale_h);
-        }
+        } 
 
         if ($scale == 1 && $scale_h == $scale_w && $this->info['mime'] != 'image/png') {
             return;
