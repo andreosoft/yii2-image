@@ -10,20 +10,40 @@ use yii\helpers\Url;
  * @author Andrey Zagorets
  */
 class Image {
-    /* Example of use:
+    /**
+     *  Example of use:
      *
-     * ~~~php
-     * // generate a thumbnail image
+     * 
+     * // generate a thumbnail image.
+     * 
      * <?php $options = [
+     * 
      *      'root' => \Yii::getAlias('@root'),
+     * 
      *      'webroot' => 'http://mysite.com/uploads',
+     * 
      *      'quality' => 50,
+     * 
+     *      'cachedir' => \Yii::getAlias('@root'),
+     * 
+     *      'resize' => 'h'|'w'|'max';
+     * 
+     *      'watermark' => 
+     * 
+     *                  ['file' => 'watermark.png',
+     * 
+     *                   'position' => 'topleft'|'topright'|'bottomleft'|'bottomright']
      * ];
+     * 
      * echo Image::thumb('test-image.jpg', 120, 120);
      * ?>
-     * ~~~
+     * 
+     * @param $filename filename 
+     * @param $width  width
+     * @param $height height
+     * @param $options options
+     * @return url cache image.
      */
-
     static function thumb($filename, $width, $height, $options = []) {
 
         if (isset($options['root'])) {
@@ -37,19 +57,21 @@ class Image {
         } else {
             $cachedir = \Yii::getAlias('@uploads');
         }
-
+        
+        $empty = false;
         if (!is_file($root . $filename)) {
             if (isset($options['empty'])) {
                 $filename = '/' . $options['empty'];
             } else {
+                $empty = true;
                 $filename = '/empty.jpg';
             }
         }
 
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-
+        
         $old_image = $filename;
-        $new_image = '/cache/' . md5(substr($filename, 0, strrpos($filename, '.')) . '-' . $width . 'x' . $height) . '.' . $extension;
+        $new_image = '/cache/' . md5(substr($filename, 0, strrpos($filename, '.')) . '-' . $width . 'x' . $height . '-' . json_encode($options)) . '.' . $extension;
 
         if (!is_file($cachedir . $new_image) || (filectime($root . $old_image) > filectime($cachedir . $new_image))) {
             $path = '';
@@ -68,8 +90,12 @@ class Image {
 
             if ($width_orig != $width || $height_orig != $height) {
                 $image = new CoreImage($root . $old_image);
-                $image->resize($width, $height);
-                if (isset($options['watermark'])) {
+                if (isset($options['resize'])) {
+                    $image->resize($width, $height, $options['resize']);
+                } else {
+                    $image->resize($width, $height);
+                }
+                if (isset($options['watermark']) && !$empty) {
                     $position = 'bottomleft';
                     if (isset($options['watermark']['position'])) {
                         $position = $options['watermark']['position'];
