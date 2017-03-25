@@ -44,7 +44,7 @@ class Image {
      * @param $options options
      * @return url cache image.
      */
-    static function thumb($filename, $width, $height, $options = []) {
+    static function thumb($filename, $width = '', $height = '', $options = []) {
 
         if (isset($options['root'])) {
             $root = $options['root'];
@@ -86,9 +86,10 @@ class Image {
                 }
             }
 
+
             list($width_orig, $height_orig) = getimagesize($root . $old_image);
 
-            if ($width_orig != $width || $height_orig != $height) {
+            if ($width_orig != $width || $height_orig != $height || !empty($width) || !empty($height)) {
                 $image = new CoreImage($root . $old_image);
                 if (isset($options['resize'])) {
                     $image->resize($width, $height, $options['resize']);
