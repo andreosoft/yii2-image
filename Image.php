@@ -45,7 +45,9 @@ class Image {
      * @return url cache image.
      */
     static function thumb($filename, $width = '', $height = '', $options = []) {
-
+        
+        ini_set('memory_limit', '-1');
+        
         if (isset($options['root'])) {
             $root = $options['root'];
         } else {
